@@ -38,6 +38,4 @@ Route::middleware('auth:api')->group(function () {
     
     Route::post('/comments', [CommentsController::class, 'store']);
 
-
-
 });
