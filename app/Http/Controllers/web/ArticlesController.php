@@ -27,7 +27,6 @@ class ArticlesController extends Controller
                                 ->join('users','users.id','articles.users_id')
                                 ->orderBy('articles.created_at','DESC')
                                 ->get();
-                                
     }
     
     public function articleByCategorie($categories_id)
@@ -48,20 +47,18 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-         $validatedData = $request->validated([
-            'title' => 'required|string|max:100',
-            'content' => 'required|string',
+        $validatedData = $request->validate([
+            'title' => 'required|string',
+            'content' => 'required',
             'picture' => 'required|file',
             'categories_id' => 'required',
             'users_id' => 'required'
         ]);
 
-        
-
         $validatedData['picture'] = Storage::disk('public')->put('articles', $request->file('picture'));
         $articles = Articles::create($validatedData);
 
-        return $articles;
+        return redirect('/')->with('msg','Votre article a ete publier');
     }
 
     /**
@@ -79,8 +76,8 @@ class ArticlesController extends Controller
                                 ->orderBy('articles.created_at','DESC')
                                 ->first();
         
-        $commentaires = $this->comments->index($article_id);
+        // $commentaires = $this->comments->index($article_id);
                                 
-        return ['articles' => $articles , 'comments' => $commentaires];
+        return $articles;
     }
 }

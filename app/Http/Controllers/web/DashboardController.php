@@ -10,10 +10,12 @@ class DashboardController extends Controller
 {
     private $articles;
     private $categories;
+    private $comments;
     
-    public function __construct(ArticlesController $articles, CategoriesController $categories) {
+    public function __construct(ArticlesController $articles, CategoriesController $categories, CommentsController $comments) {
         $this->articles = $articles;
         $this->categories = $categories;
+        $this->comments = $comments;
     }  
     
     public function home()
@@ -26,10 +28,31 @@ class DashboardController extends Controller
     
     public function lire($id)
     {
-        // $articles =  $this->articles->show($id);
+        $article =  $this->articles->show($id);
+        
         $categories =  $this->categories->index();
-        return view('read',compact('categories'));
+        
+        $commentaires =  $this->comments->index($id);
+        
+        return view('read',compact('categories','article','commentaires'));
     }
     
+    public function articleByCategorie($categories_id)
+    {
+        $articles =  $this->articles->articleByCategorie($categories_id);
+        
+        $categories =  $this->categories->index();
+        
+        $this_categorie =  $this->categories->show($categories_id);
+
+        return view('categories',compact('categories','articles','this_categorie'));
+    }
     
+    public function form_article()
+    {
+        $categories =  $this->categories->index();
+        $catego =  $this->categories->index();
+        
+        return view('article',compact('categories','catego'));
+    }
 }

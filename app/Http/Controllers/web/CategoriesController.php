@@ -46,9 +46,9 @@ class CategoriesController extends Controller
      * @param  \App\Models\Categories  $categories
      * @return \Illuminate\Http\Response
      */
-    public function show(Categories $categories)
+    public function show($categories)
     {
-        //
+        return Categories::find($categories);
     }
 
     /**

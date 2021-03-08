@@ -3,10 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\web\DashboardController;
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\web\AuthController;
 use App\Http\Controllers\web\ArticlesController;
-use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\web\CategoriesController;
+use App\Http\Controllers\web\CommentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,9 +19,12 @@ use App\Http\Controllers\CommentsController;
 |
 */
 
+// get login form
+Route::get('register', [AuthController::class, 'formSignUp'])->name('register');
+Route::get('login', [AuthController::class, 'formSignIn'])->name('login');
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 
 Route::get('/', [DashboardController::class, 'home']);
 Route::get('/articles', [DashboardController::class, 'articles']);
@@ -29,19 +32,18 @@ Route::get('/categories', [DashboardController::class, 'categories']);
 Route::get('/articles/categories/{id}', [DashboardController::class, 'articleByCategorie']);
 
 
-Route::get('/articles/{id}', [DashboardController::class, 'lire']);
-
-
 Route::middleware('auth')->group(function () {
-
+    
     Route::get('/user', [AuthController::class, 'getUser']);
-
     
-
-    Route::post('/article', [ArticlesController::class, 'store']);
+    Route::get('/article', [DashboardController::class, 'form_article'])->name('article');
+    Route::post('/article', [ArticlesController::class, 'store'])->name('article.post');
     
-    // Route::post('/categorie', [CategoriesController::class, 'store']);
-    
-    Route::post('/comments', [CommentsController::class, 'store']);
+    Route::get('/articles/{id}', [DashboardController::class, 'lire']);
 
+    Route::post('/comments', [CommentsController::class, 'store'])->name('comments.post');
+
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    
 });
+

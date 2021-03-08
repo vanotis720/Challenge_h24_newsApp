@@ -1,10 +1,9 @@
 <footer class="blog-footer">
   <p>News App made for love of code by <a href="https://vanderotis.site/">Vanotis720</a> and <a href="https://github.com/djumah-celestin">Celestin Djumah</a>.</p>
-  <p>
-    <a href="#">Remonter</a>
-  </p>
+  <!--<p>-->
+  <!--  <a href="#">Remonter</a>-->
+  <!--</p>-->
 </footer>
-
 
 <!-- Bootstrap core JavaScript -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
