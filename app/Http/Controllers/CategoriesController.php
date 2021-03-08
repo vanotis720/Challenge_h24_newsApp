@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\ApiController;
 
-class CategoriesController extends Controller
+
+class CategoriesController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -14,18 +17,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        return $this->successResponse(Categories::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +29,19 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse($validator->messages(), 422);
+        }
+        
+        $validatedData = $request->all();
+
+        $categorie = Categories::create($validatedData);
+
+        return $this->successResponse($categorie);
     }
 
     /**

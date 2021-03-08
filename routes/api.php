@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\CategoriesController;
 
 
 /*
@@ -25,5 +26,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/articles', [ArticlesController::class, 'index']);
     Route::post('/article', [ArticlesController::class, 'store']);
+    
+    Route::get('/categories', [CategoriesController::class, 'index']);
+    Route::post('/categorie', [CategoriesController::class, 'store']);
+
 
 });
