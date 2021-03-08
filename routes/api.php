@@ -27,6 +27,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/articles', [ArticlesController::class, 'index']);
     Route::post('/article', [ArticlesController::class, 'store']);
     
+    Route::get('/articles/categories/{id}', [ArticlesController::class, 'articleByCategorie']);
+    
     Route::get('/categories', [CategoriesController::class, 'index']);
     Route::post('/categorie', [CategoriesController::class, 'store']);
 

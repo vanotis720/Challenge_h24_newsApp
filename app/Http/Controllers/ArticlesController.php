@@ -27,6 +27,18 @@ class ArticlesController extends ApiController
         return $this->successResponse($articles);
     }
     
+    public function articleByCategorie($categories_id)
+    {
+        $articles = Articles::select('articles.id','articles.title','articles.content','articles.created_at','articles.picture','categories.title as categorie','users.username','users.email')
+                                ->join('categories','categories.id','articles.categories_id')
+                                ->join('users','users.id','articles.users_id')
+                                ->where('articles.categories_id', $categories_id)
+                                ->orderBy('articles.created_at','DESC')
+                                ->get();
+                                
+        return $this->successResponse($articles);
+    }
+    
     /**
      * Store a newly created resource in storage.
      *
