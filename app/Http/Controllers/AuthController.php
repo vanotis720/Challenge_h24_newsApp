@@ -5,16 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\API\ApiController;
+use App\Http\Controllers\ApiController;
 
-class AuthController extends Controller
+class AuthController extends ApiController
 {
      public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|max:25|unique:users',
             'email' => 'email|required|unique:users',
-            'password' => 'required|confirmed'
+            'password' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -22,18 +22,11 @@ class AuthController extends Controller
         }
         $validatedData = $request->all();
 
-        // $identicon = new \Identicon\Identicon();
-        // $avatar =  $identicon->getImageData($validatedData['email'],250);
-        // $name = 'avatars/'. $validatedData['username'] .'_'. time();
-        // Storage::disk('public')->put($name, $avatar);
-
-        // $validatedData['url'] = $name; 
         $validatedData['password'] = bcrypt($request->password);
 
         $user = User::create($validatedData);
 
-        $accessToken = $user->createToken('authToken')->accessToken;
-        $user['access_token'] = $accessToken;
+        $user['access_token'] = $user->createToken('authToken')->accessToken;
         
         return $this->successResponse($user);
     }
@@ -51,19 +44,19 @@ class AuthController extends Controller
         }
 
         $loginData = $request->all();
-
-        $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         
-        if (auth()->attempt([$fieldType])) {
-            return $this->errorResponse('Les informations d\'identification invalides', 422);
+
+        if (auth()->attempt($loginData)) {
+            
+            $accessToken = auth()->user()->createToken('authToken')->accessToken;
+            $user = auth()->user();
+            $user['access_token'] = $accessToken;
+    
+            return $this->successResponse($user);
         }
 
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
+        return $this->errorResponse('Les informations d\'identification invalides', 422);
 
-        $user = auth()->user();
-        $user['access_token'] = $accessToken;
-
-        return $this->successResponse($user);
     }
 
     public function getUser()
