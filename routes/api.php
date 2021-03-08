@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CommentsController;
+
 
 
 /*
@@ -24,13 +26,18 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
     Route::get('/user', [AuthController::class, 'getUser']);
 
+    Route::get('/articles/{id}', [ArticlesController::class, 'show']);
     Route::get('/articles', [ArticlesController::class, 'index']);
+    Route::get('/articles/categories/{id}', [ArticlesController::class, 'articleByCategorie']);
+
     Route::post('/article', [ArticlesController::class, 'store']);
     
-    Route::get('/articles/categories/{id}', [ArticlesController::class, 'articleByCategorie']);
     
     Route::get('/categories', [CategoriesController::class, 'index']);
     Route::post('/categorie', [CategoriesController::class, 'store']);
+    
+    Route::post('/comments', [CommentsController::class, 'store']);
+
 
 
 });

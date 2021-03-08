@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Storage;
 
 class ArticlesController extends ApiController
 {
+    private $comments;
+    
+    public function __construct(CommentsController $comments) {
+        $this->comments = $comments;
+    }    
     /**
      * Display a listing of the resource.
      *
@@ -72,9 +77,18 @@ class ArticlesController extends ApiController
      * @param  \App\Models\Articles  $articles
      * @return \Illuminate\Http\Response
      */
-    public function show(Articles $articles)
+    public function show($article_id)
     {
-        //
+        $articles = Articles::select('articles.id','articles.title','articles.content','articles.created_at','articles.picture','categories.title as categorie','users.username','users.email')
+                                ->join('categories','categories.id','articles.categories_id')
+                                ->join('users','users.id','articles.users_id')
+                                ->where('articles.id', $article_id)
+                                ->orderBy('articles.created_at','DESC')
+                                ->first();
+        
+        $commentaires = $this->comments->index($article_id);
+                                
+        return $this->successResponse(['articles' => $articles , 'comments' => $commentaires]);
     }
 
     /**
