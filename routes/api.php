@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ArticlesController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +23,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->group(function () {
     Route::get('/user', [AuthController::class, 'getUser']);
 
-
+    Route::get('/articles', [ArticlesController::class, 'index']);
 });

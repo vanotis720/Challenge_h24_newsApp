@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Articles;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
 
-class ArticlesController extends Controller
+
+class ArticlesController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,11 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        //
+        $articles = Articles::select('articles.id','articles.title','articles.content','articles.created_at','articles.picture','categories.title as categorie','users.username','users.email')
+                                ->join('categories','categories.id','articles.categories_id')
+                                ->join('users','users.id','articles.users_id')
+                                ->get();
+        return $this->successResponse($articles);
     }
 
     /**

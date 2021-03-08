@@ -59,7 +59,7 @@ class AuthController extends ApiController
 
     }
 
-    public function getUser()
+    public function getUser($id)
     {
         return $this->successResponse(auth()->user());
     }
